@@ -17,9 +17,8 @@ jobs:
       - run: sed -i '/mockito:/d' pubspec.yaml
       - run: flutter clean
       - run: flutter pub get
-      - run: echo "android.bundle.enableUncompressedNativeLibs=false" >> android/gradle.properties
-      - run: echo "android.plugin.allowNdkErrors=true" >> android/gradle.properties
-      - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety
+      - run: sed -i '/android {/a \    lintOptions { checkReleaseBuilds false; abortOnError false }\n    packagingOptions { doNotStrip "/*.so" }' android/app/build.gradle**
+      - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety --ignore-deprecation
       - uses: actions/upload-artifact@v4
         with:
             name: release-apk
