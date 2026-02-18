@@ -13,8 +13,9 @@ jobs:
             distribution: 'zulu'
       - uses: subosito/flutter-action@v2
         with:
-            flutter-version: '2.5.3'
+            flutter-version: '2.2.3'
       - run: sed -i '/mockito:/d' pubspec.yaml
+      - run: flutter clean
       - run: rm -f pubspec.lock && flutter pub get
       - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety
       - uses: actions/upload-artifact@v4
