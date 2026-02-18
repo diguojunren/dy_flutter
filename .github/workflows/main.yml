@@ -20,6 +20,11 @@ jobs:
       - run: sed -i '/mockito:/d' pubspec.yaml
       
       - run: flutter clean
+      # --- 新增下面这两行，解决 AndroidX 依赖冲突 ---
+      - run: |
+          echo "android.useAndroidX=true" > android/gradle.properties
+          echo "android.enableJetifier=true" >> android/gradle.properties
+      # ------------------------------------------
       
       - run: flutter pub get
       
