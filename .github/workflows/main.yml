@@ -7,19 +7,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-java@v4
         with:
-            java-version: '11'
-            distribution: 'zulu'
+          java-version: '11'
+          distribution: 'zulu'
+          
       - uses: subosito/flutter-action@v2
         with:
-            flutter-version: '2.10.5'
+          flutter-version: '2.2.3'
+          
       - run: sed -i '/mockito:/d' pubspec.yaml
+      
       - run: flutter clean
+      
       - run: flutter pub get
-      - run: sed -i '/android {/a \    lintOptions { checkReleaseBuilds false; abortOnError false }\n    packagingOptions { doNotStrip "/*.so" }' android/app/build.gradle**
-      - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety --ignore-deprecation
+      
+      # 使用 | 符号来解决 YAML 的格式冲突
+      - run: |
+          sed -i '/apply from: "$flutterRoot\/packages\/flutter_tools\/gradle\/flutter.gradle"/a tasks.whenTaskAdded { task -> if (task.name.contains("stripReleaseDebugSymbols")) { task.enabled = false } }' android/app/build.gradle
+      
+      - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety
+      
       - uses: actions/upload-artifact@v4
         with:
-            name: release-apk
-            path: build/app/outputs/flutter-apk/*.apk
+          name: release-apk
+          path: build/app/outputs/flutter-apk/*.apk
