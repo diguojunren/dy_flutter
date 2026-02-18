@@ -17,7 +17,7 @@ jobs:
       - run: sed -i '/mockito:/d' pubspec.yaml
       - run: flutter clean
       - run: rm -f pubspec.lock && flutter pub get
-      - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety
+      - run: flutter build apk --release --no-tree-shake-icons --no-sound-null-safety --no-strip
       - uses: actions/upload-artifact@v4
         with:
             name: release-apk
