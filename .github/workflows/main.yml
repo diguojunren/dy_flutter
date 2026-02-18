@@ -13,7 +13,7 @@ jobs:
             distribution: 'zulu'
       - uses: subosito/flutter-action@v2
         with:
-            flutter-version: '2.2.3'
+            flutter-version: '2.10.5'
       - run: sed -i '/mockito:/d' pubspec.yaml
       - run: flutter clean
       - run: flutter pub get
